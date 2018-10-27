@@ -26,9 +26,10 @@ void func(){
   int* local = new int(1001);
   cout << "addr1:" << local << endl;
   bad b(local);
+  delete local;
   thread t(b);
+
   //cout << "before join " << *local << endl;
-  //delete local;
   cout << "end delete" << endl;
   t.detach();
   //t.join();
@@ -38,6 +39,7 @@ void func(){
 }
 int main(){
   func();
-  sleep(10);
+  pthread_exit(NULL);
+  //sleep(10);
   cout << "end" << endl;
 }
