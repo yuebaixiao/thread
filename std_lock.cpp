@@ -11,7 +11,7 @@ void swap(data_protect& , data_protect& );
 //是线程安全的
 class data_protect{
   friend void swap(data_protect& , data_protect& );
-public:
+private:
   list<int> alist{1,2};
   mutex m;
 public:  
@@ -29,8 +29,14 @@ public:
 
 void swap(data_protect& d1, data_protect& d2){
   std::lock(d1.m, d2.m);
+  //造成死锁
+  //d1.add_list(11);
+  lock_guard<mutex> lock_a(d1.m, std::adopt_lock);
+  lock_guard<mutex> lock_b(d2.m, std::adopt_lock);
+  swap(d1.alist, d2.alist);
 }
 int main(){
   data_protect d1, d2;
   swap(d1, d2);
+  d1.add_list(11);
 }
