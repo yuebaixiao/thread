@@ -29,18 +29,23 @@ public:
 
 void swap(data_protect& d1, data_protect& d2){
   //if(d1 == d2) return;
-  std::lock(d1.m, d2.m);
+
   //造成死锁
   //d1.add_list(11);
-  lock_guard<mutex> lock_a(d1.m, std::adopt_lock);
-  lock_guard<mutex> lock_b(d2.m, std::adopt_lock);
+  unique_lock<mutex> lock_a(d1.m, std::defer_lock);
+  unique_lock<mutex> lock_b(d2.m, std::defer_lock);
+  std::lock(lock_a, lock_b);
   swap(d1.alist, d2.alist);
 
-  //没有unlock成员函数
-  //lock_a.unlock();
+  //有unlock成员函数,并可以手动调用unlock函数
+  //如果没有持有锁，就调用unlock成员函数就会导致程序崩溃。所以要检查是否拥有锁。
+  if(lock_a.owns_lock() && lock_b.owns_lock()){
+    lock_a.unlock();
+    lock_b.unlock();
+  }
 }
 int main(){
   data_protect d1, d2;
   swap(d1, d2);
-  d1.add_list(11);
+  d2.add_list(11);
 }

@@ -1,5 +1,6 @@
 #include <mutex>
 #include <climits>//ULONG_MAX
+#include <thread>
 
 class hierarchical_mutex{
   std::mutex mtx;
@@ -84,5 +85,8 @@ void thread_b(){
 }
 
 int main(){
-
+  std::thread a(thread_a);
+  //std::thread b(thread_b);
+  a.join();
+  //b.join();
 }
