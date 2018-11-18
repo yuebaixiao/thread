@@ -3,18 +3,20 @@
 #include <queue>
 #include <condition_variable>
 #include <thread>
-#include <unistd.h>
+#include <unistd.h>//sleep
 
 std::mutex mut;
 std::queue<int> data_queue;
 std::condition_variable data_cond;
 
 void data_preparation_thread(){
+  int data = 0;
   while(true){
-    int data = 10;
+    data++;
     std::lock_guard<std::mutex> lk(mut);
     data_queue.push(data);
     data_cond.notify_one();
+    std::cout << "after  notify_one" << std::endl; 
     //std::this_thread::sleep_for(1000);
     sleep(1);
   }
@@ -23,7 +25,9 @@ void data_preparation_thread(){
 void data_process_thread(){
   while(true){
     std::unique_lock<std::mutex> lk(mut);
+    std::cout << "before wait" << std::endl; 
     data_cond.wait(lk, []{return !data_queue.empty();});
+    std::cout << "after  wait" << std::endl;
     int data = data_queue.front();
     std::cout << data << std::endl;
     data_queue.pop();
