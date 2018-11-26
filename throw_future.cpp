@@ -31,15 +31,19 @@ double div2(std::promise<double>& pro, double a, double b){
 }
 int main(){
   try{
-    //std::future<double> f = std::async(div1, 10, 0);
-    //std::cout << f.get() << std::endl;
 
-    //std::packaged_task<double(double, double)> t(div1);
-    //std::future<double> f2 = t.get_future();
-    //std::thread thread1(std::ref(t), 100, 0);
-    //thread1.detach();
-    //f2.get();
+    //std::asnyc
+    std::future<double> f = std::async(div1, 10, 0);
+    std::cout << f.get() << std::endl;
 
+    //std::package_task
+    std::packaged_task<double(double, double)> t(div1);
+    std::future<double> f2 = t.get_future();
+    std::thread thread1(std::ref(t), 100, 0);
+    thread1.detach();
+    f2.get();
+
+    //std::promise
     std::promise<double> pro;
     std::future<double> f3 = pro.get_future();
     std::thread thread2(div2, std::ref(pro), 100, 0);
