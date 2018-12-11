@@ -10,12 +10,20 @@ public:
   string_vector& operator=(const string_vector&);
   ~string_vector();
   void push_back(const std::string&);
+  
   size_t size() const {
     return first_free - elements;
   };
+  
   size_t capacity() const {
     return cap - elements;
   }
+
+  void resize(size_t, std::string&);
+  void resize(size_t);
+
+  void reserve(size_t);
+  
   std::string* begin() const{return elements;}
   std::string* end() const{return first_free;}
 private:
@@ -45,7 +53,6 @@ std::pair<std::string*, std::string*> string_vector::alloc_n_copy
 
 void string_vector::push_back(const std::string& s){
   chk_n_alloc();
-  
   alloc.construct(first_free++, s);
 }
 
@@ -89,6 +96,26 @@ void string_vector::reallocate(){
   cap = elements + newcap;
 }
 
-int main(){
+void string_vector::reserve(size_t sz){
+  if(sz > capacity()){
+    reallocate();
+  }
+}
 
+void string_vector::resize(size_t sz){
+  size_t cap = capacity();
+  if(sz > cap){
+    auto data = alloc.allocate(sz - cap);
+    for(size_t i = cap;i != sz; ++i){
+      //调用string的默认构造方法
+      alloc.construct(data++);
+    }
+  }
+  else if(sz < size()){
+
+  }
+}
+int main(){
+  string_vector sv;
+  sv.push_back(std::string("aa"));
 }
