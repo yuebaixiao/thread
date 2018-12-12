@@ -37,6 +37,7 @@ private:
   (const std::string* b, const std::string* e);
   void free();
   void reallocate();
+  void reallocate(size_t);
   std::string* elements;
   std::string* first_free;
   std::string* cap;
@@ -96,23 +97,56 @@ void string_vector::reallocate(){
   cap = elements + newcap;
 }
 
+void string_vector::reallocate(size_t sz){
+  auto newcap = sz * 2;
+  auto newdata = alloc.allocate(newcap);
+  auto dest = newdata;
+  auto elem = elements;
+  for(size_t i = 0; i != size(); ++i){
+    alloc.construct(dest++, std::move(*elem++));
+  }
+  free();
+  elements = newdata;
+  first_free = dest;
+  cap = elements + newcap;
+}
 void string_vector::reserve(size_t sz){
   if(sz > capacity()){
-    reallocate();
+    reallocate(sz);
   }
 }
 
 void string_vector::resize(size_t sz){
   size_t cap = capacity();
   if(sz > cap){
-    auto data = alloc.allocate(sz - cap);
-    for(size_t i = cap;i != sz; ++i){
+    reallocate(sz);
+    for(size_t i = size();i != sz; ++i){
       //调用string的默认构造方法
-      alloc.construct(data++);
+      alloc.construct(first_free++);
     }
   }
   else if(sz < size()){
+    for(size_t i = sz;i != size(); ++i){
+      //调用string的西沟函数
+      alloc.destroy(--first_free);
+    }
+  }
+}
 
+void string_vector::resize(size_t sz, std::string& s){
+  size_t cap = capacity();
+  if(sz > cap){
+    reallocate(sz);
+    for(size_t i = size();i != sz; ++i){
+      //调用string的非默认构造方法
+      alloc.construct(first_free++, s);
+    }
+  }
+  else if(sz < size()){
+    for(size_t i = sz;i != size(); ++i){
+      //调用string的西沟函数
+      alloc.destroy(--first_free);
+    }
   }
 }
 int main(){
