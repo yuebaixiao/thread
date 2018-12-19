@@ -4,11 +4,13 @@
 
 class string_vector{
   friend bool operator==(const string_vector&, const string_vector&);
+  friend bool operator!=(const string_vector&, const string_vector&);
 public:
   string_vector():
     elements(nullptr), first_free(nullptr), cap(nullptr){}
   string_vector(const string_vector&);
   string_vector& operator=(const string_vector&);
+  string_vector(std::initializer_list<std::string>);
   ~string_vector();
   void push_back(const std::string&);
   
@@ -39,9 +41,9 @@ private:
   void free();
   void reallocate();
   void reallocate(size_t);
-  std::string* elements;
-  std::string* first_free;
-  std::string* cap;
+  std::string* elements;//指向第一个元素的指针
+  std::string* first_free;//指向最后一个元素的下一个位置的指针
+  std::string* cap;//指向vector空间最后一个位置的下一个位置的指针
 };
 
 //必须在类的外面再定义一次，否则后面使用alloc的地方，编译不过
@@ -71,7 +73,11 @@ string_vector::string_vector(const string_vector& s){
   elements = newdata.first;
   first_free = cap = newdata.second;
 }
-
+string_vector::string_vector(std::initializer_list<std::string> sl){
+  auto newdata = alloc_n_copy(sl.begin(), sl.end());
+  elements = newdata.first;
+  first_free = cap = newdata.second;
+}
 string_vector::~string_vector(){
   free();
 }
@@ -153,12 +159,28 @@ void string_vector::resize(size_t sz, std::string& s){
 
 bool operator==(const string_vector& lhs, const string_vector& rhs){
   if(lhs.size() == rhs.size()){
-    
+    auto *p1 = lhs.elements;
+    auto *p2 = rhs.elements;
+    while(p1 != lhs.first_free){
+      if(*p1++ != *p2++){
+	return false;
+      }
+    }
+    return true;
   }else{
     return false;
   }
 }
+bool operator!=(const string_vector& lhs, const string_vector& rhs){
+  return !operator==(lhs, rhs);
+}
 int main(){
-  string_vector sv;
-  sv.push_back(std::string("aa"));
+  string_vector sv1{"112"};
+  string_vector sv2{"11"};
+  if(sv1 != sv2){
+    std::cout << "!=" << std::endl;
+  }
+  else{
+    std::cout << "==" << std::endl;
+  }
 }
