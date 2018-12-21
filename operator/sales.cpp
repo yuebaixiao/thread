@@ -33,11 +33,21 @@ Sales_data& Sales_data::operator+=(const Sales_data& rhs){
   revenue += rhs.revenue;
   return *this;
 }
+Sales_data& Sales_data::operator=(const std::string& isbn){
+  bookNo = isbn;
+  return *this;
+}
 int main(){
+  Sales_data s1;
+  s1 = std::string("aa");
+  std::cout << s1 << std::endl;
+  /*
   Sales_data s1(std::cin);
   std::string bn("aa");
   Sales_data s2(bn, 10, 5.2);
   Sales_data s3 = s1 + s2;
   std::cout << s3 << std::endl;
+  */
+
   
 }

@@ -41,8 +41,38 @@ bool operator==(const String& lhs, const String& rhs){
     return false;
   }
 }
-
+bool operator<(const String& lhs, const String& rhs){
+  if(lhs.size() == rhs.size()){
+    char* t1 = lhs.elements;
+    char* t2 = rhs.elements;
+    while(*t1 == *t2 && *t1 != '\0'){
+      t1++;
+      t2++;
+    }
+    if(*t1 == '\0'){
+      return false;//==
+    }
+    else if(*t1 < *t2){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  else if(lhs.size() < rhs.size()){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
 int main(){
+  String s1("bbc");
+  String s2("abce");
+  if(s1 < s2){
+    std::cout << "<" << std::endl;
+  }
+  /*
   String s1("qq");
   String s2("qq");
   if(s1 == s2){
@@ -52,4 +82,5 @@ int main(){
     std::cout << "false" << std::endl;
   }
   std::cout << s1 << std::endl;
+  */
 }

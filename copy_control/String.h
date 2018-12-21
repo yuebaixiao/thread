@@ -5,6 +5,7 @@ class String{
   friend std::ostream& operator<<(std::ostream&, const String&);
   friend bool operator==(const String&, const String&);
   friend bool operator!=(const String&, const String&);
+  friend bool operator<(const String&, const String&);
  public:
   String(const char*);
   size_t size() const{
@@ -23,3 +24,4 @@ std::allocator<char> String::alloc;
 std::ostream& operator<<(std::ostream&, const String&);
 bool operator==(const String&, const String&);
 bool operator!=(const String&, const String&);
+bool operator<(const String&, const String&);

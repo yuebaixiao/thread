@@ -13,6 +13,8 @@ public:
   string_vector(std::initializer_list<std::string>);
   ~string_vector();
   void push_back(const std::string&);
+
+  string_vector& operator=(std::initializer_list<std::string>);
   
   size_t size() const {
     return first_free - elements;
@@ -174,7 +176,21 @@ bool operator==(const string_vector& lhs, const string_vector& rhs){
 bool operator!=(const string_vector& lhs, const string_vector& rhs){
   return !operator==(lhs, rhs);
 }
+
+string_vector& string_vector::operator=(std::initializer_list<std::string> il){
+  auto newdata = alloc_n_copy(il.begin(), il.end());
+  free();
+  elements = newdata.first;
+  first_free = cap = newdata.second;
+  return *this;
+}
+
 int main(){
+  string_vector s1{"111"};
+  std::cout << s1.size() << std::endl;
+  s1 = {"222","233"};
+  std::cout << s1.size() << std::endl;
+  /*
   string_vector sv1{"112"};
   string_vector sv2{"11"};
   if(sv1 != sv2){
@@ -183,4 +199,5 @@ int main(){
   else{
     std::cout << "==" << std::endl;
   }
+  */
 }
