@@ -1,7 +1,11 @@
+#ifndef __STRBLOB_H__
+#define __STRBLOB_H__
+
 #include <memory>
 #include <string>
 #include <vector>
 
+class StrBlobPtr;
 class StrBlob{
   friend class StrBlobPtr;
   friend bool operator==(const StrBlob&, const StrBlob&);
@@ -19,10 +23,15 @@ class StrBlob{
 
   std::string& operator[](size_type);
   const std::string& operator[](size_type)const;
-  
+
+  StrBlobPtr begin();
+  StrBlobPtr end();
+
  private:
   std::shared_ptr<std::vector<std::string>> data;
   void check(size_type, const std::string&) const;
 };
 bool operator==(const StrBlob&, const StrBlob&);
 bool operator!=(const StrBlob&, const StrBlob&);
+
+#endif

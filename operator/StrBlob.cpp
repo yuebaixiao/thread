@@ -1,5 +1,6 @@
 #include "StrBlob.h"
-#include <iostream>
+//#include <iostream>
+#include "StrBlobPtr.h"
 
 StrBlob::StrBlob() : data(std::make_shared<std::vector<std::string>>()){}
 StrBlob::StrBlob(std::initializer_list<std::string> il) :
@@ -51,6 +52,16 @@ std::string& StrBlob::operator[](size_type idx){
 }
 const std::string& StrBlob::operator[](size_type idx)const{
   return (*data)[idx];
+}
+
+
+StrBlobPtr StrBlob::begin(){
+  auto b = StrBlobPtr(*this);
+  return b;
+}
+StrBlobPtr StrBlob::end(){
+  auto e = StrBlobPtr(*this, data->size());
+  return e;
 }
 
 /*
