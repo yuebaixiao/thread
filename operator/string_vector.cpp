@@ -16,6 +16,9 @@ public:
 
   string_vector& operator=(std::initializer_list<std::string>);
   
+  std::string& operator[](std::size_t);
+  const std::string& operator[](std::size_t)const;
+  
   size_t size() const {
     return first_free - elements;
   };
@@ -185,11 +188,32 @@ string_vector& string_vector::operator=(std::initializer_list<std::string> il){
   return *this;
 }
 
+std::string& string_vector::operator[](std::size_t idx){
+  return *(elements + idx);
+}
+const std::string& string_vector::operator[](std::size_t idx)const{
+  return *(elements + idx);
+}
+  
 int main(){
+  //下标运算符
+  string_vector s{"11","aa", "dasd"};
+  std::cout << s[2] << std::endl;
+  std::string& str1 = s[1];
+  s[2] = std::string("111");
+  std::cout << s[2] << std::endl;
+  const string_vector s2{"as", "asdf", "123"};
+  const std::string& str2 = s2[2];
+  s[2] = std::string("111");
+  //接受initialized_list为参数的赋值运算符
+  /*
   string_vector s1{"111"};
   std::cout << s1.size() << std::endl;
   s1 = {"222","233"};
   std::cout << s1.size() << std::endl;
+  */
+
+  //相等运算符
   /*
   string_vector sv1{"112"};
   string_vector sv2{"11"};

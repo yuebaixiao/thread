@@ -15,6 +15,10 @@ class StrBlob{
   void pop_back();
   std::string& front();
   std::string& back();
+
+  std::string& operator[](size_type);
+  const std::string& operator[](size_type)const;
+  
  private:
   std::shared_ptr<std::vector<std::string>> data;
   void check(size_type, const std::string&) const;
