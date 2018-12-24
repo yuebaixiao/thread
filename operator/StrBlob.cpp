@@ -52,6 +52,8 @@ std::string& StrBlob::operator[](size_type idx){
 const std::string& StrBlob::operator[](size_type idx)const{
   return (*data)[idx];
 }
+
+/*
 int main(){
   StrBlob b1 = {"11","22","33"};
   std::cout << b1[1] << std::endl;
@@ -60,7 +62,7 @@ int main(){
   const std::string& str = b1[1];
   const StrBlob b2 = {"11","22","33"};
   std::cout << b2[1] << std::endl;
-  /*
+  
   StrBlob b1 = {"aa","bb"};
   StrBlob b2 = {"aa","bb"};
   StrBlob b3 = {"aa","bb","dd"};
@@ -71,5 +73,6 @@ int main(){
   if(b1 != b3){
     cout << "false" << endl;
   }
-  */
+  
 }
+*/

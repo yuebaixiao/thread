@@ -3,6 +3,7 @@
 #include <vector>
 
 class StrBlob{
+  friend class StrBlobPtr;
   friend bool operator==(const StrBlob&, const StrBlob&);
   friend bool operator!=(const StrBlob&, const StrBlob&);
  public:
