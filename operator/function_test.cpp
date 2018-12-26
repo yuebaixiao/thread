@@ -5,6 +5,9 @@
 int add(int a, int b){
   return a+ b;
 }
+
+double add(double a, double b){  return a + b;}
+
 auto mod = [](int a, int b){return a % b;};
 struct divide{
   int operator()(int a, int b){
@@ -29,7 +32,10 @@ int main(){
   */
   
   std::map<std::string, std::function<int(int, int)>> mp;
-  mp.insert({"+", add});
+  int(*add1)(int, int) = add;
+  double(*add2)(double, double) = add;
+  mp.insert({"+", add1});
+  mp.insert({"+1", add2});
   mp.insert({"-", std::minus<int>()});
   mp.insert({"*", [](int a, int b){return a * b;}});
   mp.insert({"%", mod});
@@ -40,4 +46,5 @@ int main(){
   std::cout << mp["*"](2, 2) << std::endl;
   std::cout << mp["/"](100, 2) << std::endl;
   std::cout << mp["%"](31, 15) << std::endl;
+  std::cout << mp["+1"](3.1, 5.98) << std::endl;
 }
