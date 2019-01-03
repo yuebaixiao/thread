@@ -1,6 +1,7 @@
 #include "Quote3.h"
+#include "Basket.h"
 #include <vector>
-
+#include <iostream>
 
 double print_total(std::ostream& os,
 		   const Quote& item, size_t n){
@@ -12,27 +13,9 @@ double print_total(std::ostream& os,
 }
 
 int main(){
-
-  std::vector<Quote> qv;
-  for(unsigned i = 0; i != 10; ++i){
-    qv.push_back(Bulk_quote("01", 100, 10, 0.1));
-  }
-  double total = 0;
-  for(const auto s : qv){
-    total += s.net_price(20);
-  }
-  std::cout << total << std::endl;
-
-  std::cout << "-------------------------" << std::endl;
-
-  std::vector<std::shared_ptr<Quote>> sv;
-  for(unsigned i = 0; i != 10; ++i){
-    sv.push_back(std::make_shared<Bulk_quote>("01", 100, 10, 0.1));
-  }
-  double total1 = 0;
-  for(const auto s : sv){
-    total1 += s->net_price(20);
-  }
-  std::cout << total1 << std::endl;
-  
+  Basket bsk;
+  bsk.add_item(std::make_shared<Quote>("01", 100));
+  bsk.add_item(std::make_shared<Bulk_quote>("01", 100, 2, 0.1));
+  bsk.add_item(std::make_shared<Bulk_quote>("01", 100, 2, 0.1));
+  bsk.total_receipt(std::cout);
 }

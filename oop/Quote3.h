@@ -1,8 +1,7 @@
-#ifndef __QUOTE2_H__
-#define __QUOTE2_H__
+#ifndef __QUOTE3_H__
+#define __QUOTE3_H__
 
 #include <iostream>
-#include <memory>
 
 class Quote{
  public:
