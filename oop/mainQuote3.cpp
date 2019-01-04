@@ -14,7 +14,9 @@ double print_total(std::ostream& os,
 
 int main(){
   Basket bsk;
-  bsk.add_item(std::make_shared<Quote>("01", 100));
+  auto q = std::make_shared<Quote>("01", 100);
+  bsk.add_item(q);
+  //bsk.add_item(std::make_shared<Bulk_quote>("01", 100, 2, 0.1));
   bsk.add_item(std::make_shared<Bulk_quote>("01", 100, 2, 0.1));
   bsk.add_item(std::make_shared<Bulk_quote>("01", 100, 2, 0.1));
   bsk.total_receipt(std::cout);
