@@ -6,12 +6,6 @@
 #include <iostream>
 #include "TextQuery.h"
 
-//#include "Query_base.h"
-//#include "WordQuery.h"
-//#include "NotQuery.h"
-//#include "AndQuery.h"
-//#include "OrQuery.h"
-
 class QueryResult;
 class Query;
 
@@ -55,7 +49,7 @@ class WordQuery : public Query_base{
     std::cout << "WordQuery:" << s << std::endl;
   }
   QueryResult eval(const TextQuery& t)const{
-    //return t.query(query_word);
+    return t.query(query_word);
   }
   std::string rep()const{
     return query_word;
