@@ -41,7 +41,9 @@ class Query{
 
  private:
   Query(std::shared_ptr<Query_base> query)
-    :q(query){}
+    :q(query){
+    std::cout << "Query pri:" << std::endl;
+  }
   std::shared_ptr<Query_base> q;
   
 };
@@ -49,9 +51,11 @@ class Query{
 class WordQuery : public Query_base{
   friend class Query;//Query 使用WordQuery的私有构造函数
   WordQuery(const std::string& s)
-    : query_word(s){}
+    : query_word(s){
+    std::cout << "WordQuery:" << s << std::endl;
+  }
   QueryResult eval(const TextQuery& t)const{
-    return t.query(query_word);
+    //return t.query(query_word);
   }
   std::string rep()const{
     return query_word;
@@ -60,11 +64,12 @@ class WordQuery : public Query_base{
   std::string query_word;
 };
 
-
 class NotQuery : public Query_base{
   friend Query operator~(const Query&);
   NotQuery(const Query& q)
-    :query(q){}
+    :query(q){
+    std::cout << "NotQuery" << std::endl;
+  }
   std::string rep() const {
     return "~(" + query.rep() + ")";
   }
@@ -82,7 +87,9 @@ class BinaryQuery : public Query_base{
  protected:
   BinaryQuery(const Query& l, const Query& r,
 	      std::string s)
-    : lhs(l), rhs(r), opSym(s){}
+    : lhs(l), rhs(r), opSym(s){
+    std::cout << "BinaryQuery" << std::endl;
+  }
   std::string rep() const {
     return "(" + lhs.rep() + " "
       + opSym + " "
@@ -95,7 +102,9 @@ class BinaryQuery : public Query_base{
 class AndQuery : public BinaryQuery{
   friend Query operator&(const Query&, const Query&);
   AndQuery(const Query& l, const Query& r)
-    : BinaryQuery(l, r, "&"){}
+    : BinaryQuery(l, r, "&"){
+    std::cout << "AndQuery" << std::endl;
+  }
   QueryResult eval(const TextQuery&) const;
 };
 
@@ -103,11 +112,12 @@ inline Query operator&(const Query& lhs, const Query& rhs){
   return std::shared_ptr<Query_base>(new AndQuery(lhs, rhs));
 }
 
-
 class OrQuery : public BinaryQuery{
   friend Query operator|(const Query&, const Query&);
   OrQuery(const Query& l, const Query& r)
-    : BinaryQuery(l, r, "|"){}
+    : BinaryQuery(l, r, "|"){
+    std::cout << "OrQuery" << std::endl;
+  }
   QueryResult eval(const TextQuery&) const;
 };
 

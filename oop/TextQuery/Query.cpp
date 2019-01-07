@@ -5,4 +5,18 @@ std::ostream& operator<<(std::ostream& os, const Query& q){
   return os << q.rep();
 }
 
-inline Query::Query(const std::string& s) : q(new WordQuery(s)){}
+Query::Query(const std::string& s) : q(new WordQuery(s)){
+    std::cout << "Query pub" << std::endl;
+}
+
+QueryResult NotQuery::eval(const TextQuery&)const{
+
+}
+
+QueryResult AndQuery::eval(const TextQuery&)const{
+
+}
+
+QueryResult OrQuery::eval(const TextQuery&)const{
+
+}
