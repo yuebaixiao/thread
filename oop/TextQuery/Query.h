@@ -30,7 +30,7 @@ class Query{
     return q->eval(t);
   }
   std::string rep()const{
-    q->rep();
+    return q->rep();
   }
 
  private:
@@ -66,14 +66,16 @@ class NotQuery : public Query_base{
   }
   std::string rep() const {
     return "~(" + query.rep() + ")";
+    //return  query.rep();
   }
   QueryResult eval(const TextQuery&)const;
   Query query;
 };
 
 inline Query operator~(const Query& op){
-  std::shared_ptr<Query_base> tmp(new NotQuery(op));
-  return Query(tmp);
+  return std::shared_ptr<Query_base>(new NotQuery(op));
+  //std::shared_ptr<Query_base> tmp(new NotQuery(op));
+  //return Query(tmp);
 }
 
 
