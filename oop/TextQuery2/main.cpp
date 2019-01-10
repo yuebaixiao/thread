@@ -13,9 +13,9 @@ ostream& print(ostream& os, const QueryResult& qr){
 int main(){
   ifstream infile("/home/ys/cpp/thread/oop/TextQuery/search_text");
   TextQuery tq(infile);
-  //Query q = Query("fiery") & Query("bird") | Query("wind");//OK
+  Query q = Query("fiery") & Query("bird") | Query("wind");//OK
   //Query q = Query("fiery") | Query("bird");//OK
   //Query q("Daddy");//OK
-  Query q = ~Query("Alice");//OK
+  //Query q = ~Query("Alice");//OK
   print(std::cout, q.eval(tq)) << std::endl;
 }

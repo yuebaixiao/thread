@@ -17,6 +17,8 @@ class Query_base{
  private:
   virtual QueryResult eval(const TextQuery&) const = 0;
   virtual std::string rep() const = 0;
+
+  virtual Query_base* clone() const = 0;
 };
 
 class Query{
@@ -26,13 +28,14 @@ class Query{
  public:
   Query(const std::string&);//构建一个新的WordQuery
   ~Query(){
+    std::cout << "Free" << std::endl;
     delete q;
   }
 
   Query(const Query& tmp){
     if(&tmp != this){
       std::cout << "copy Query" << std::endl;
-      //Query_base* base = 
+      q = tmp.q->clone();
     }
   }
 
@@ -76,18 +79,26 @@ class WordQuery : public Query_base{
     return query_word;
   }
 
+  virtual WordQuery* clone() const {
+    return new WordQuery(*this);
+  }
   std::string query_word;
 };
 
 class NotQuery : public Query_base{
   friend Query operator~(const Query&);
   NotQuery(const Query& q)
-    :query(q){
+    :query(q){//调用Query的拷贝构造函数
     std::cout << "NotQuery" << std::endl;
   }
   std::string rep() const {
     return "~(" + query.rep() + ")";
   }
+  
+  virtual NotQuery* clone() const {
+    return new NotQuery(*this);
+  }
+  
   QueryResult eval(const TextQuery&)const;
   Query query;
 };
@@ -122,6 +133,10 @@ class AndQuery : public BinaryQuery{
     std::cout << "AndQuery" << std::endl;
   }
   QueryResult eval(const TextQuery&) const;
+  
+  virtual AndQuery* clone() const {
+    return new AndQuery(*this);
+  }
 };
 
 inline Query operator&(const Query& lhs, const Query& rhs){
@@ -133,6 +148,10 @@ class OrQuery : public BinaryQuery{
   OrQuery(const Query& l, const Query& r)
     : BinaryQuery(l, r, "|"){
     std::cout << "OrQuery" << std::endl;
+  }
+  
+  virtual OrQuery* clone() const {
+    return new OrQuery(*this);
   }
   QueryResult eval(const TextQuery&) const;
 };
